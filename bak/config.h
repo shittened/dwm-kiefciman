@@ -70,6 +70,8 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", black, "-nf", blue, "-sb", blue, "-sf", black, NULL };
 /*static const char *termcmd[]  = { "st", NULL };*/
 static const char *termcmd[]  = { "kitty" };
+static const char scratchpadname[] = "scratchpad";
+static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "100x30", NULL };
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -111,6 +113,9 @@ static const Key keys[] = {
 	/*{ MODKEY, XK_Tab, spawn, SHCMD("rofi -show window -hover-select -me-select-entry '' -me-accept-entry MousePrimary") },*/
 	{ MODKEY, XK_Up, setcfact, {.f = +0.05} },
 	{ MODKEY, XK_Down, setcfact, {.f = -0.05} },
+	{ MODKEY, XK_t, spawn, SHCMD("fish -c ~/Github/dwm-kiefciman/scripts/trayer.sh") },
+	{ MODKEY, XK_f, spawn, SHCMD("pcmanfm") },
+	{ MODKEY, XK_g, togglescratch, {.v = scratchpadcmd } },
 };
 
 /* button definitions */

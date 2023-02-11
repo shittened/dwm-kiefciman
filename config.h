@@ -1,12 +1,12 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 4;        /* border pixel of windows */
+static const unsigned int borderpx  = 3;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "SauceCodePro Nerd Font Bold:size=10" };  /*{ "monospace:size=10" };*/
-static const char dmenufont[]       = "SauceCodePro Nerd Font Bold:size=10"; /*"monospace:size=10";*/
+static const char *fonts[]          = { "Source Code Pro:size=11:style=Bold" };  /*{ "monospace:size=10" };*/
+static const char dmenufont[]       = "Source Code Pro:size=11:style=Bold"; /*"monospace:size=10";*/
 static const char red[]       = "#f28fad";
 static const char orange[]    = "#f8bd96";
 static const char yellow[]    = "#fae3b0";
@@ -22,8 +22,8 @@ static const char dark[]	  = "#302d41";
 static const char black[]	  = "#000000";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
-	[SchemeNorm] = { blue, black, black },
-	[SchemeSel]  = { black, blue,  blue },
+	[SchemeNorm] = { black, blue, red },
+	[SchemeSel]  = { black, red,  blue },
 };
 
 /* tagging */
@@ -46,11 +46,13 @@ static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
 
+#include "layouts.c"
 static const Layout layouts[] = {
 	/* symbol     arrange function */
-	{ "[]=",      tile },     /*first entry is default */
-	{ "><>",      NULL },    /* no layout function means floating behavior */
-	{ "[=]",      monocle },
+	{ "[]=", tile },     /*first entry is default */
+	{ "><>", NULL },    /* no layout function means floating behavior */
+	/*{ "[=]",      monocle },*/
+	{ "|||", grid },
 };
 
 /* key definitions */
@@ -70,6 +72,8 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", black, "-nf", blue, "-sb", blue, "-sf", black, NULL };
 /*static const char *termcmd[]  = { "st", NULL };*/
 static const char *termcmd[]  = { "kitty" };
+static const char scratchpadname[] = "scratchpad";
+static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "100x30", NULL };
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -111,6 +115,9 @@ static const Key keys[] = {
 	/*{ MODKEY, XK_Tab, spawn, SHCMD("rofi -show window -hover-select -me-select-entry '' -me-accept-entry MousePrimary") },*/
 	{ MODKEY, XK_Up, setcfact, {.f = +0.05} },
 	{ MODKEY, XK_Down, setcfact, {.f = -0.05} },
+	{ MODKEY, XK_t, spawn, SHCMD("fish -c ~/Github/dwm-kiefciman/scripts/trayer.sh") },
+	{ MODKEY, XK_f, spawn, SHCMD("pcmanfm") },
+	{ MODKEY, XK_g, togglescratch, {.v = scratchpadcmd } },
 };
 
 /* button definitions */
