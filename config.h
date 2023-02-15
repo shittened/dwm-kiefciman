@@ -71,21 +71,23 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", black, "-nf", blue, "-sb", blue, "-sf", black, NULL };
 /*static const char *termcmd[]  = { "st", NULL };*/
-static const char *termcmd[]  = { "kitty" };
+static const char *termcmd[]  = { "st" };
 static const char scratchpadname[] = "scratchpad";
 static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "100x30", NULL };
+
+#include <X11/XF86keysym.h>
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY, XK_r, spawn, {.v = dmenucmd } },
 	{ MODKEY, XK_Return, spawn, SHCMD("kitty") },
 	{ MODKEY, XK_F11, togglebar, {0} },
-	/*{ MODKEY, XK_Up, focusstack, {.i = +1 } },
-	{ MODKEY, XK_Down, focusstack, {.i = -1 } },*/
+	{ MODKEY, XK_Up, focusstack, {.i = +1 } },
+	{ MODKEY, XK_Down, focusstack, {.i = -1 } },
 	{ MODKEY, XK_i, incnmaster, {.i = +1 } },
 	{ MODKEY, XK_d, incnmaster, {.i = -1 } },
-	{ MODKEY, XK_Left, setmfact, {.f = -0.01} },
-	{ MODKEY, XK_Right, setmfact, {.f = +0.01} },
+	{ MODKEY|ShiftMask, XK_Left, setmfact, {.f = -0.01} },
+	{ MODKEY|ShiftMask, XK_Right, setmfact, {.f = +0.01} },
 	/*{ MODKEY, XK_Tab, view, {0} },*/
 	{ MODKEY, XK_q, killclient, {0} },
 	/*{ MODKEY, XK_t, setlayout, {.v = &layouts[0]} },
@@ -110,14 +112,21 @@ static const Key keys[] = {
 	TAGKEYS( XK_9, 8)
 	{ MODKEY|ControlMask, XK_End, quit, {0} },
 	{ MODKEY, XK_b, spawn, SHCMD("chromium") },
-	{ MODKEY, XK_space,	spawn, SHCMD("rofi -show drun -hover-select -me-select-entry '' -me-accept-entry MousePrimary") },
-	{ MODKEY, XK_BackSpace, zoom, {0} },
+	/*{ MODKEY, XK_space,	spawn, SHCMD("rofi -show drun -hover-select -me-select-entry '' -me-accept-entry MousePrimary") },
+	{ MODKEY, XK_BackSpace, zoom, {0} },*/
+	{MODKEY, XK_space, spawn, SHCMD("godesktop | dmenu -c -l 20 -p 'Apps ' | golaunch") },
 	/*{ MODKEY, XK_Tab, spawn, SHCMD("rofi -show window -hover-select -me-select-entry '' -me-accept-entry MousePrimary") },*/
-	{ MODKEY, XK_Up, setcfact, {.f = +0.05} },
-	{ MODKEY, XK_Down, setcfact, {.f = -0.05} },
+	{ MODKEY|ShiftMask, XK_Up, setcfact, {.f = +0.05} },
+	{ MODKEY|ShiftMask, XK_Down, setcfact, {.f = -0.05} },
 	{ MODKEY, XK_t, spawn, SHCMD("fish -c ~/Github/dwm-kiefciman/scripts/trayer.sh") },
 	{ MODKEY, XK_f, spawn, SHCMD("pcmanfm") },
 	{ MODKEY, XK_g, togglescratch, {.v = scratchpadcmd } },
+	{0, XF86XK_MonBrightnessDown, spawn, SHCMD("blight set -2%") },
+	{0, XF86XK_MonBrightnessUp, spawn, SHCMD("blight set +2%") },
+	{0, XF86XK_AudioLowerVolume, spawn, SHCMD("amixer -q sset Master 5%-") },
+	{0, XF86XK_AudioRaiseVolume, spawn, SHCMD("amixer -q sset Master 5%+") },
+	{0, XF86XK_AudioMute, spawn, SHCMD("amixer -q sset Master toggle") },
+	{ MODKEY, XK_a, spawn, SHCMD("flameshot full") },
 };
 
 /* button definitions */
