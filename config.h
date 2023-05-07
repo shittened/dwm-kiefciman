@@ -5,7 +5,8 @@ static const unsigned int borderpx  = 3;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "Source Code Pro:size=11:style=Bold" };  /*{ "monospace:size=10" };*/
+/*static const char *fonts[]          = { "Source Code Pro:size=11:style=Bold", "HeavyData Nerd Font:size=11" };  { "monospace:size=10" };*/
+static const char *fonts[]          = { "Hack Nerd Font:size=11:style=Bold" };  /*{ "monospace:size=10" };*/
 static const char dmenufont[]       = "Source Code Pro:size=11:style=Bold"; /*"monospace:size=10";*/
 static const char red[]       = "#f28fad";
 static const char orange[]    = "#f8bd96";
@@ -28,7 +29,8 @@ static const char *colors[][3]      = {
 
 /* tagging */
 /*static const char *tags[] = { "共", "食", "い", "メ", "ロ", "ン" };*/
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+/*static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };*/
+static const char *tags[] = { "", "", "﯂", "", "", "", "", "", "" };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -36,21 +38,22 @@ static const Rule rules[] = {
 	 *	WM_NAME(STRING) = title
 	 */
 	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
-	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
+	/*{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
+	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },*/
+	{ NULL, NULL, "scratchpad", 0, 1, -1},
 };
 
 /* layout(s) */
 static const float mfact     = 0.5; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
-static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
+static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
 
 #include "layouts.c"
 static const Layout layouts[] = {
 	/* symbol     arrange function */
-	{ "[]=", tile },     /*first entry is default */
-	{ "><>", NULL },    /* no layout function means floating behavior */
+	{ " ", tile },     /*first entry is default */
+	{ "ﳝ ", NULL },    /* no layout function means floating behavior */
 	/*{ "[=]",      monocle },*/
 	{ "|||", grid },
 };
@@ -88,15 +91,15 @@ static const Key keys[] = {
 	{ MODKEY, XK_d, incnmaster, {.i = -1 } },
 	{ MODKEY|ShiftMask, XK_Left, setmfact, {.f = -0.01} },
 	{ MODKEY|ShiftMask, XK_Right, setmfact, {.f = +0.01} },
-	/*{ MODKEY, XK_Tab, view, {0} },*/
+	{ MODKEY, XK_Tab, view, {0} },
 	{ MODKEY, XK_q, killclient, {0} },
 	/*{ MODKEY, XK_t, setlayout, {.v = &layouts[0]} },
 	{ MODKEY,  XK_f, setlayout, {.v = &layouts[1]} },
 	{ MODKEY,  XK_m, setlayout, {.v = &layouts[2]} },*/
 	{ MODKEY|ShiftMask, XK_BackSpace, setlayout, {0} },
 	{ MODKEY|ControlMask, XK_f, togglefloating, {0} },
-	/*{ MODKEY, XK_0, view, {.ui = ~0 } },
-	{ MODKEY|ShiftMask, XK_0, tag, {.ui = ~0 } },
+	{ MODKEY, XK_0, view, {.ui = ~0 } },
+	/*{ MODKEY|ShiftMask, XK_0, tag, {.ui = ~0 } },
 	{ MODKEY,           XK_comma,  focusmon, {.i = -1 } },
 	{ MODKEY,           XK_period, focusmon, {.i = +1 } },
 	{ MODKEY|ShiftMask, XK_comma,  tagmon, {.i = -1 } },
@@ -112,8 +115,8 @@ static const Key keys[] = {
 	TAGKEYS( XK_9, 8)
 	{ MODKEY|ControlMask, XK_End, quit, {0} },
 	{ MODKEY, XK_b, spawn, SHCMD("chromium") },
-	/*{ MODKEY, XK_space,	spawn, SHCMD("rofi -show drun -hover-select -me-select-entry '' -me-accept-entry MousePrimary") },
-	{ MODKEY, XK_BackSpace, zoom, {0} },*/
+	/*{ MODKEY, XK_space,	spawn, SHCMD("rofi -show drun -hover-select -me-select-entry '' -me-accept-entry MousePrimary") },*/
+	{ MODKEY, XK_z, zoom, {0} },
 	{MODKEY, XK_space, spawn, SHCMD("godesktop | dmenu -c -l 20 -p 'Apps ' | golaunch") },
 	/*{ MODKEY, XK_Tab, spawn, SHCMD("rofi -show window -hover-select -me-select-entry '' -me-accept-entry MousePrimary") },*/
 	{ MODKEY|ShiftMask, XK_Up, setcfact, {.f = +0.05} },
@@ -127,6 +130,8 @@ static const Key keys[] = {
 	{0, XF86XK_AudioRaiseVolume, spawn, SHCMD("amixer -q sset Master 5%+") },
 	{0, XF86XK_AudioMute, spawn, SHCMD("amixer -q sset Master toggle") },
 	{ MODKEY, XK_a, spawn, SHCMD("flameshot full") },
+	{ MODKEY, XK_c, spawn, SHCMD("fortune | xcowsay -t 0") },
+	{ MODKEY, XK_w, spawn, SHCMD("nitrogen") },
 };
 
 /* button definitions */
