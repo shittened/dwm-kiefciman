@@ -1,13 +1,16 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 3;        /* border pixel of windows */
+static const unsigned int borderpx  = 4;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
+static const unsigned int gappx     = 8;        /* gap pixel between windows */
+static const unsigned int minwsz    = 20;       /* Minimal heigt of a client for smfact */
+
 /*static const char *fonts[]          = { "Source Code Pro:size=11:style=Bold", "HeavyData Nerd Font:size=11" };  { "monospace:size=10" };*/
-static const char *fonts[]          = { "Hack Nerd Font:size=11:style=Bold" };  /*{ "monospace:size=10" };*/
-static const char dmenufont[]       = "Source Code Pro:size=11:style=Bold"; /*"monospace:size=10";*/
+static const char *fonts[]          = { "Hack Nerd Font:size=14:style=Bold" };  /*{ "monospace:size=10" };*/
+static const char dmenufont[]       = "Source Code Pro:size=14:style=Bold"; /*"monospace:size=10";*/
 static const char red[]       = "#f28fad";
 static const char orange[]    = "#f8bd96";
 static const char yellow[]    = "#fae3b0";
@@ -45,6 +48,7 @@ static const Rule rules[] = {
 
 /* layout(s) */
 static const float mfact     = 0.5; /* factor of master area size [0.05..0.95] */
+static const float smfact     = 0.00; /* factor of tiled clients [0.00..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
@@ -82,8 +86,11 @@ static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "100x30
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
-	{ MODKEY, XK_r, spawn, {.v = dmenucmd } },
-	{ MODKEY, XK_Return, spawn, SHCMD("kitty") },
+	/*{ MODKEY, XK_r, spawn, {.v = dmenucmd } },*/
+	/*{ MODKEY, XK_r, spawn, SHCMD("mpv --no-video ~/sounds/Pause.wav") },*/
+	{ MODKEY, XK_r, spawn, SHCMD("dmenu_run -c -l 15 -p 'Run '") },
+	/*{ MODKEY, XK_Return, spawn, SHCMD("mpv --no-video ~/sounds/Notso_Confirm.wav") },*/
+	{ MODKEY, XK_Return, spawn, SHCMD("kitty -o background_opacity=0.8") },
 	{ MODKEY, XK_F11, togglebar, {0} },
 	{ MODKEY, XK_Up, focusstack, {.i = +1 } },
 	{ MODKEY, XK_Down, focusstack, {.i = -1 } },
@@ -92,6 +99,7 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask, XK_Left, setmfact, {.f = -0.01} },
 	{ MODKEY|ShiftMask, XK_Right, setmfact, {.f = +0.01} },
 	{ MODKEY, XK_Tab, view, {0} },
+	/*{ MODKEY, XK_q, spawn, SHCMD("fish -c ~/scripts/pokemon-sound.sh") },*/
 	{ MODKEY, XK_q, killclient, {0} },
 	/*{ MODKEY, XK_t, setlayout, {.v = &layouts[0]} },
 	{ MODKEY,  XK_f, setlayout, {.v = &layouts[1]} },
@@ -117,19 +125,23 @@ static const Key keys[] = {
 	{ MODKEY, XK_b, spawn, SHCMD("chromium") },
 	/*{ MODKEY, XK_space,	spawn, SHCMD("rofi -show drun -hover-select -me-select-entry '' -me-accept-entry MousePrimary") },*/
 	{ MODKEY, XK_z, zoom, {0} },
-	{MODKEY, XK_space, spawn, SHCMD("godesktop | dmenu -c -l 20 -p 'Apps ' | golaunch") },
+	/*{ MODKEY, XK_space, spawn, SHCMD("mpv --no-video ~/sounds/Confirm.wav") },*/
+	{ MODKEY, XK_space, spawn, SHCMD("godesktop | dmenu -c -l 15 -p 'Apps ' | golaunch") },
+/*	{ MODKEY, XK_space, spawn, SHCMD("fish -c ~/scripts/dmenu_run.sh") },*/
 	/*{ MODKEY, XK_Tab, spawn, SHCMD("rofi -show window -hover-select -me-select-entry '' -me-accept-entry MousePrimary") },*/
 	{ MODKEY|ShiftMask, XK_Up, setcfact, {.f = +0.05} },
 	{ MODKEY|ShiftMask, XK_Down, setcfact, {.f = -0.05} },
 	{ MODKEY, XK_t, spawn, SHCMD("fish -c ~/Github/dwm-kiefciman/scripts/trayer.sh") },
 	{ MODKEY, XK_f, spawn, SHCMD("pcmanfm") },
+	/*{ MODKEY, XK_g, spawn, SHCMD("mpv --no-video ~/sounds/Trampoline.wav") },*/
 	{ MODKEY, XK_g, togglescratch, {.v = scratchpadcmd } },
 	{0, XF86XK_MonBrightnessDown, spawn, SHCMD("blight set -2%") },
 	{0, XF86XK_MonBrightnessUp, spawn, SHCMD("blight set +2%") },
 	{0, XF86XK_AudioLowerVolume, spawn, SHCMD("amixer -q sset Master 5%-") },
 	{0, XF86XK_AudioRaiseVolume, spawn, SHCMD("amixer -q sset Master 5%+") },
 	{0, XF86XK_AudioMute, spawn, SHCMD("amixer -q sset Master toggle") },
-	{ MODKEY, XK_a, spawn, SHCMD("flameshot full") },
+	/*{ MODKEY, XK_Print, spawn, SHCMD("mpv --no-video ~/sounds/Powerup.wav") },*/
+	{ MODKEY, XK_Print, spawn, SHCMD("flameshot full -p ~/Pictures/screenshots") },
 	{ MODKEY, XK_c, spawn, SHCMD("fortune | xcowsay -t 0") },
 	{ MODKEY, XK_w, spawn, SHCMD("nitrogen") },
 };

@@ -1,11 +1,76 @@
 --- dwm.c
 +++ dwm.c
-@@ -1915,7 +1939,7 @@ updategeom(void)
- 					m->clients = c->next;
- 					detachstack(c);
- 					c->mon = mons;
--					attach(c);
-+					attachaside(c);
- 					attachstack(c);
- 				}
- 				if (m == selmon)
+@@ -631,32 +653,17 @@ configurerequest(XEvent *e)
+ Monitor *
+ createmon(void)
+ {
+-	unsigned int i;
+ 	Monitor *m;
+ 
+ 	m = ecalloc(1, sizeof(Monitor));
+ 	m->tagset[0] = m->tagset[1] = 1;
+ 	m->mfact = mfact;
++	m->nmaster = nmaster;
+ 	m->showbar = showbar;
+ 	m->topbar = topbar;
+ 	m->lt[0] = &layouts[0];
+ 	m->lt[1] = &layouts[1 % LENGTH(layouts)];
+ 	strncpy(m->ltsymbol, layouts[0].symbol, sizeof m->ltsymbol);
+-	m->ltaxis[0] = layoutaxis[0];
+-	m->ltaxis[1] = layoutaxis[1];
+-	m->ltaxis[2] = layoutaxis[2];
+-	m->msplit = 1;
+-	/* init tags, bars, layouts, axes, msplits and mfacts */
+-	m->curtag = m->prevtag = 1;
+-	for(i = 0; i < LENGTH(tags) + 1; i++){
+-		m->showbars[i] = m->showbar;
+-		m->lts[i] = &layouts[0];
+-		m->mfacts[i] = m->mfact;
+-		m->ltaxes[i][0] = m->ltaxis[0];
+-		m->ltaxes[i][1] = m->ltaxis[1];
+-		m->ltaxes[i][2] = m->ltaxis[2];
+-		m->msplits[i] = m->msplit;
+-	}
+ 	return m;
+ }
+ 
+@@ -1686,10 +1700,38 @@ tagmon(const Arg *arg)
+ 	sendmon(selmon->sel, dirtomon(arg->i));
+ }
+ 
++void
++tile(Monitor *m)
++{
++	unsigned int i, n, h, mw, my, ty;
++	Client *c;
++
++	for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
++	if (n == 0)
++		return;
++
++	if (n > m->nmaster)
++		mw = m->nmaster ? m->ww * m->mfact : 0;
++	else
++		mw = m->ww;
++	for (i = my = ty = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
++		if (i < m->nmaster) {
++			h = (m->wh - my) / (MIN(n, m->nmaster) - i);
++			resize(c, m->wx, m->wy + my, mw - (2*c->bw), h - (2*c->bw), 0);
++			if (my + HEIGHT(c) < m->wh)
++				my += HEIGHT(c);
++		} else {
++			h = (m->wh - ty) / (n - i);
++			resize(c, m->wx + mw, m->wy + ty, m->ww - mw - (2*c->bw), h - (2*c->bw), 0);
++			if (ty + HEIGHT(c) < m->wh)
++				ty += HEIGHT(c);
++		}
++}
++
+ void
+ togglebar(const Arg *arg)
+ {
+-	selmon->showbar = selmon->showbars[selmon->curtag] = !selmon->showbar;
++	selmon->showbar = !selmon->showbar;
+ 	updatebarpos(selmon);
+ 	XMoveResizeWindow(dpy, selmon->barwin, selmon->wx, selmon->by, selmon->ww, bh);
+ 	arrange(selmon);
