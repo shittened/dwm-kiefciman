@@ -6,5 +6,5 @@ if [ "$checktrayer" = "0" ]
 then
 	trayer &
 else
-	killall trayer
+	pkill trayer
 fi
