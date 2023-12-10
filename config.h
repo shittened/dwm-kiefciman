@@ -31,8 +31,8 @@ static const char dark[]	  = "#302d41";
 static const char black[]	  = "#000000";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
-	[SchemeNorm] = { black, blue, red },
-	[SchemeSel]  = { black, red,  blue },
+	[SchemeNorm] = { white, black, black },
+	[SchemeSel]  = { black, white,  white },
 };
 
 /* tagging */
@@ -88,8 +88,8 @@ static const char *wallpaper[]   = { "nitrogen", NULL };
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
-	//{ MODKEY,                       XK_r,      spawn,          {.v = dmenucmd } },
-	{ MODKEY,                       XK_r,      spawn,		   SHCMD("~/scripts/menu.sh") },
+	{ MODKEY,                       XK_r,      spawn,          {.v = dmenucmd } },
+	//{ MODKEY,                       XK_r,      spawn,		   SHCMD("~/scripts/menu.sh") },
 	{ MODKEY,		                XK_Return, spawn,          {.v = termcmd } },
 	//{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_Right,  focusstack,     {.i = +1 } },
