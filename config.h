@@ -13,8 +13,8 @@ static const unsigned int gappov    = 10;       /* vert outer gap between window
 static int smartgaps                = 0;        /* 1 means no outer gap when there is only one window */
 static const int decorhints			= 1;	   /* 1 means respect decoration hints */
 
-static const char *fonts[]          = { "Hack Nerd Font:size=11:style=Bold" };  /*{ "monospace:size=10" };*/
-static const char dmenufont[]       = "Source Code Pro:size=11:style=Bold"; /*"monospace:size=10";*/
+static const char *fonts[]          = { "Hack Nerd Font:size=14:style=Bold" };  /*{ "monospace:size=10" };*/
+static const char dmenufont[]       = "Source Code Pro:size=14:style=Bold"; /*"monospace:size=10";*/
 
 static const char red[]       = "#f28fad";
 static const char orange[]    = "#f8bd96";
