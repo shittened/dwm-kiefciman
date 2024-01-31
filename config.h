@@ -22,7 +22,7 @@ static const char yellow[]    = "#fae3b0";
 static const char green[]     = "#abe9b3";
 static const char cyan[]      = "#89dceb";
 static const char blue[]	  = "#7aa2f7";
-static const char pink[]	  = "#bb9af7";
+static const char pink[]	  = "#f5c2e7";
 static const char white[]	  = "#d9e0ee";
 static const char cream[]	  = "#c3bac6";
 static const char indigo[]	  = "#575268";
@@ -31,8 +31,18 @@ static const char dark[]	  = "#302d41";
 static const char black[]	  = "#000000";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
-	[SchemeNorm] = { white, black, black },
-	[SchemeSel]  = { black, white,  white },
+	[SchemeNorm] = { cream, black, black },
+	[SchemeSel]  = { black, cream,  cream },
+};
+
+static const char *const autostart[] = {
+    "picom", NULL,
+    "dunst", NULL,
+    "flameshot", NULL,
+    "xfce-power-manager", NULL,
+    "nitrogen", "--restore", NULL,
+    "sh", "-c", "~/dwm-kiefciman/stats.sh", NULL,
+	NULL /* terminate */
 };
 
 /* tagging */
@@ -74,7 +84,6 @@ static const Layout layouts[] = {
 	{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
 
-/* helper for spawning shell commands in the pre dwm-5.0 fashion */
 #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
 
 /* commands */
@@ -82,7 +91,7 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, NULL };
 //static const char *termcmd[]  = { "alacritty", NULL };
 static const char *termcmd[]  = { "kitty", NULL };
-static const char *browser[]	 = { "chromium-browser", NULL };
+static const char *browser[]	 = { "chromium", NULL };
 static const char *filemanager[] = { "pcmanfm", NULL };
 static const char *wallpaper[]   = { "nitrogen", NULL };
 
