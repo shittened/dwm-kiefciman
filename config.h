@@ -8,31 +8,35 @@ static const int topbar             = 1;		/* 0 means bottom bar */
 static const int user_bh            = 25;       /* 0 means that dwm will calculate bar height, >= 1 means dwm will user_bh as bar height */
 static const unsigned int gappih    = 10;       /* horiz inner gap between windows */
 static const unsigned int gappiv    = 10;       /* vert inner gap between windows */
-static const unsigned int gappoh    = 10;       /* horiz outer gap between windows and screen edge */
-static const unsigned int gappov    = 10;       /* vert outer gap between windows and screen edge */
+static const unsigned int gappoh    = 30;       /* horiz outer gap between windows and screen edge */
+static const unsigned int gappov    = 30;       /* vert outer gap between windows and screen edge */
 static int smartgaps                = 0;        /* 1 means no outer gap when there is only one window */
 static const int decorhints			= 1;	   /* 1 means respect decoration hints */
 
-static const char *fonts[]          = { "Hack Nerd Font:size=14:style=Bold" };  /*{ "monospace:size=10" };*/
-static const char dmenufont[]       = "Source Code Pro:size=14:style=Bold"; /*"monospace:size=10";*/
+static const char *fonts[]          = { "Hack Nerd Font:size=12:style=Bold" };  /*{ "monospace:size=10" };*/
+static const char dmenufont[]       = "Source Code Pro:size=12:style=Bold"; /*"monospace:size=10";*/
 
-static const char red[]       = "#f28fad";
-static const char orange[]    = "#f8bd96";
-static const char yellow[]    = "#fae3b0";
-static const char green[]     = "#abe9b3";
-static const char cyan[]      = "#89dceb";
-static const char blue[]	  = "#7aa2f7";
-static const char pink[]	  = "#f5c2e7";
-static const char white[]	  = "#d9e0ee";
-static const char cream[]	  = "#c3bac6";
-static const char indigo[]	  = "#575268";
-static const char dark[]	  = "#302d41";
-/*static const char black[]	  = "#1a1823";*/
-static const char black[]	  = "#000000";
+#define red "#f28fad"
+#define orange "#f8bd96"
+#define yellow "#fae3b0"
+#define green "#abe9b3"
+#define cyan "#89dceb"
+#define blue "#7aa2f7"
+#define pink "#f5c2e7"
+#define white "#d9e0ee"
+#define cream "#c3bac6"
+#define indigo "#575268"
+#define dark "#302d41"
+//#define black "#1a1823"
+#define black "#000000"
+
+static const char color1[] = blue;
+static const char color2[] = black;
+
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
-	[SchemeNorm] = { cream, black, black },
-	[SchemeSel]  = { black, cream,  cream },
+	[SchemeNorm] = { color1, color2, color2 },
+	[SchemeSel]  = { color2, color1,  color1 },
 };
 
 static const char *const autostart[] = {
@@ -41,7 +45,7 @@ static const char *const autostart[] = {
     "flameshot", NULL,
     "xfce-power-manager", NULL,
     "nitrogen", "--restore", NULL,
-    "sh", "-c", "~/dwm-kiefciman/stats.sh", NULL,
+    "sh", "-c", "~/projects/dwm-kiefciman/stats.sh", "&", "disown", NULL,
 	NULL /* terminate */
 };
 
@@ -88,12 +92,14 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, NULL };
+//static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-nb", color2, "-nf", color1, "-sf", color2, "-sb", color1, "-i", "-l", "15", "-fn", dmenufont, "-p", "Apps: ", "-y", "30", "-z", "600", "-bw", "4", NULL };
 //static const char *termcmd[]  = { "alacritty", NULL };
 static const char *termcmd[]  = { "kitty", NULL };
 static const char *browser[]	 = { "chromium", NULL };
 static const char *filemanager[] = { "pcmanfm", NULL };
 static const char *wallpaper[]   = { "nitrogen", NULL };
+static const char *rofi[] = { "rofi", "-show", "drun", "-show-icons", NULL };
 
 static const Key keys[] = {
 	/* modifier                     key        function        argument */
@@ -113,7 +119,7 @@ static const Key keys[] = {
 	//{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
 	//{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
 	//{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
-	//{ MODKEY,                       XK_space,  setlayout,      {0} },
+	{ MODKEY,                       XK_space,  spawn, {.v = rofi} },
 	//{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
 	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
