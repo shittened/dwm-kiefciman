@@ -5,7 +5,7 @@ static const unsigned int borderpx  = 3;        /* border pixel of windows */
 static const unsigned int snap      = 10;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;		/* 0 means bottom bar */
-static const int user_bh            = 28;       /* 0 means that dwm will calculate bar height, >= 1 means dwm will user_bh as bar height */
+static const int user_bh            = 30;       /* 0 means that dwm will calculate bar height, >= 1 means dwm will user_bh as bar height */
 static const unsigned int gappih    = 10;       /* horiz inner gap between windows */
 static const unsigned int gappiv    = 10;       /* vert inner gap between windows */
 static const unsigned int gappoh    = 10;       /* horiz outer gap between windows and screen edge */
@@ -13,8 +13,10 @@ static const unsigned int gappov    = 10;       /* vert outer gap between window
 static int smartgaps                = 0;        /* 1 means no outer gap when there is only one window */
 static const int decorhints			= 1;	   /* 1 means respect decoration hints */
 
-static const char *fonts[]          = { "Hack Nerd Font:size=12:style=Bold" };  /*{ "monospace:size=10" };*/
-static const char dmenufont[]       = "Source Code Pro:size=12:style=Bold"; /*"monospace:size=10";*/
+static const char *fonts[]          = { "Hack Nerd Font:size=11:style=Bold" };  /*{ "monospace:size=10" };*/
+static const char dmenufont[]       = "Source Code Pro:size=11:style=Bold"; /*"monospace:size=10";*/
+static const int vertpad            = 10;       /* vertical padding of bar */
+static const int sidepad            = 10;       /* horizontal padding of bar */
 
 #define red "#f28fad"
 #define orange "#f8bd96"
@@ -22,7 +24,7 @@ static const char dmenufont[]       = "Source Code Pro:size=12:style=Bold"; /*"m
 #define green "#abe9b3"
 #define cyan "#89dceb"
 #define blue "#7aa2f7"
-#define pink "#f5c2e7"
+#define purple "#f5c2e7"
 #define white "#d9e0ee"
 #define cream "#c3bac6"
 #define indigo "#575268"
@@ -30,7 +32,7 @@ static const char dmenufont[]       = "Source Code Pro:size=12:style=Bold"; /*"m
 //#define black "#1a1823"
 #define black "#000000"
 
-static const char color1[] = orange;
+static const char color1[] = purple;
 static const char color2[] = black;
 
 static const char *colors[][3]      = {
@@ -93,7 +95,7 @@ static const Layout layouts[] = {
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 //static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, NULL };
-static const char *dmenucmd[] = { "dmenu_run", "-nb", color2, "-nf", color1, "-sf", color2, "-sb", color1, "-i", "-l", "15", "-fn", dmenufont, "-p", "Apps: ", "-y", "30", "-z", "600", "-bw", "4", NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-nb", color2, "-nf", color1, "-sf", color2, "-sb", color1, "-i", "-l", "15", "-fn", dmenufont, "-p", "Apps: ", "-x", "10", "-y", "50", "-z", "600", "-bw", "3", NULL };
 //static const char *termcmd[]  = { "alacritty", NULL };
 static const char *termcmd[]  = { "kitty", NULL };
 static const char *browser[]	 = { "chromium", NULL };
@@ -146,7 +148,7 @@ static const Key keys[] = {
 	{0,								XF86XK_AudioRaiseVolume, spawn,		   SHCMD("amixer -q sset Master 5%+") },
 	{0,								XF86XK_AudioMute,		 spawn,		   SHCMD("amixer -q sset Master toggle") },
 	{ MODKEY,						XK_Print,				 spawn,		   SHCMD("flameshot full -p ~/Pictures/screenshots") },
-	{ MODKEY,						XK_t,					 spawn,		   SHCMD("$HOME/dwm-kiefciman/trayer.sh") },
+	{ MODKEY,						XK_t,					 spawn,		   SHCMD("$HOME/dwm/trayer.sh") },
 	{0,								XF86XK_MonBrightnessDown,spawn,		   SHCMD("brightnessctl set 5%-") },	
 	{0,								XF86XK_MonBrightnessUp,  spawn,		   SHCMD("brightnessctl set +5%") },	
 	{ MODKEY,						XK_x,					 spawn,		   SHCMD("xkill") },
