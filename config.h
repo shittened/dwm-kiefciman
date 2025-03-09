@@ -32,7 +32,7 @@ static const int sidepad            = 10;       /* horizontal padding of bar */
 //#define black "#1a1823"
 #define black "#000000"
 
-static const char color1[] = purple;
+static const char color1[] = blue;
 static const char color2[] = black;
 
 static const char *colors[][3]      = {
